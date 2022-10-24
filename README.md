@@ -71,7 +71,6 @@ The flush cache endpoint provides you with full control on syncing the web servi
  *
  * Positive result
  */
-
 {
   code: "cache_flushed",
   message: "Cache has been flushed!"
@@ -86,7 +85,6 @@ The health check endpoint allows you to integrate your service with various sani
  *
  * Positive result
  */
-
 {
   code: "healthy",
   message: "Everything works correctly!"
