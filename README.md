@@ -1,6 +1,8 @@
 # Azure App Configuration Service proxy
 
-A super simple cache management for Azures App Configuration Services. Azures App Configuration Service comes with various limitations:
+A super simple cache management for feature flags in Azures App Configuration Services.
+
+Azures App Configuration Service comes with various limitations:
 
 - limited number of requests per hour
 - some SDKs can only fetch one setting at a time
@@ -11,6 +13,7 @@ On medium scale front-end applications these limitations make this service impos
 
 - 🚀 [Getting Started](#getting-started)
 - ⚙️ [Build and Deploy](#build-and-deploy)
+- ⁉️ [How to use](#how-to-use)
 - 📝 [License](#license)
 
 ## Getting Started
@@ -37,6 +40,58 @@ npm run build
 ```
 
 You can either deploy the contents of `/dist` folder in your own custom way, or you can refer to the [.azure folder](https://github.com/paulmorar/azure-app-configuration-proxy/tree/main/.azure) for a demo pipeline that you can run on Azure.
+
+## How to use
+
+After you deploy this service to a web application, you will have 3 endpoints exposed:
+- `/`
+- `/flush-cache`
+- `/health-check`
+
+The main endpoint supports passing a query parmeter with the value containing your comma separated feature flags. 
+
+```js
+/**
+ * GET /?feature=first,second,third
+ *
+ * Example result
+ */
+{
+  first: true,
+  second: true,
+  third: false
+}
+```
+
+The flush cache endpoint provides you with full control on syncing the web service with the app configuration service.
+
+```js
+/**
+ * GET /flush-cache
+ *
+ * Positive result
+ */
+
+{
+  code: "cache_flushed",
+  message: "Cache has been flushed!"
+}
+```
+
+The health check endpoint allows you to integrate your service with various sanity checks within your infrastructure - this is, of course, optional. In case of a different response than the one below, you are most likely experiencing issues with the service.
+
+```js
+/**
+ * GET /health-check
+ *
+ * Positive result
+ */
+
+{
+  code: "healthy",
+  message: "Everything works correctly!"
+}
+```
 
 ## License
 
