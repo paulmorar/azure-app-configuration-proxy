@@ -36,7 +36,7 @@ Building the application is as simple as running one command:
 npm run build
 ```
 
-You can either deploy the contents of `/dist` folder in your own custom way, or you can refer to the `.azure` folder for a fully fledged pipeline that you can run on Azure.
+You can either deploy the contents of `/dist` folder in your own custom way, or you can refer to the [.azure folder](https://github.com/paulmorar/azure-app-configuration-proxy/tree/main/.azure) for a demo pipeline that you can run on Azure.
 
 ## License
 
