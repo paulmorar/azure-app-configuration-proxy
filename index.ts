@@ -7,9 +7,9 @@ import { getFeature } from "./utilities/get-feature";
 const app = express();
 const appCache = new nodeCache({ stdTTL: 300 });
 
-const client = process.env.CONFIGURATION_CONNECTION_STRING
-  ? new AppConfigurationClient(process.env.CONFIGURATION_CONNECTION_STRING)
-  : undefined;
+const client = new AppConfigurationClient(
+  process.env.CONFIGURATION_CONNECTION_STRING!
+);
 
 setup(process.env.INSIGHTS_CONNECTION_STRING).start();
 
