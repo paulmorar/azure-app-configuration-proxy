@@ -13,32 +13,42 @@ const client = process.env.CONFIGURATION_CONNECTION_STRING
 
 setup(process.env.INSIGHTS_CONNECTION_STRING).start();
 
+const handleError = (res: Response, code: string, message: string) => {
+  res.status(500).json({ code, message });
+};
+
+const fetchFeatureFlags = async (features: string[]) => {
+  const responseObject: any = {};
+  for (const featureKey of features) {
+    if (appCache.has(featureKey)) {
+      responseObject[featureKey] = appCache.get(featureKey);
+    } else {
+      appCache.del(featureKey);
+      const fetchedData = await getFeature({ client, feature: featureKey });
+      appCache.set(featureKey, fetchedData);
+      responseObject[featureKey] = fetchedData;
+    }
+  }
+  return responseObject;
+};
+
 app.get("/", async (req: Request, res: Response) => {
   if (!client) {
-    res.status(500).json({
-      code: "no_client_connection",
-      message: "Did not initialize client correctly!",
-    });
+    handleError(
+      res,
+      "no_client_connection",
+      "Did not initialize client correctly!"
+    );
     return;
   }
 
-  let responseObject = {} as any;
-
-  if (typeof req.query.feature === "string" && !!req.query.feature.length) {
+  if (typeof req.query.feature === "string" && req.query.feature.length) {
     const parsedFeatures = req.query.feature.split(",");
-
-    for (const featureKey of parsedFeatures) {
-      if (appCache.has(featureKey)) {
-        responseObject[featureKey] = appCache.get(featureKey);
-      } else {
-        appCache.del(featureKey);
-        const fetchedData = await getFeature({ client, feature: featureKey });
-        appCache.set(featureKey, fetchedData);
-        responseObject[featureKey] = fetchedData;
-      }
-    }
+    const responseObject = await fetchFeatureFlags(parsedFeatures);
+    res.json(responseObject);
+  } else {
+    res.json({});
   }
-  res.json(responseObject);
 });
 
 app.get("/health-check", (_req: Request, res: Response) => {
