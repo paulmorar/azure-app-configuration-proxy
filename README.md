@@ -16,17 +16,23 @@ On medium scale front-end applications these limitations make this service impos
 - ⁉️ [How to use](#how-to-use)
 - 📝 [License](#license)
 
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- You have an Azure account. If you don't have one, you can create one at [Azure](https://azure.microsoft.com/).
+- You have Node.js installed. You can download it from [Node.js](https://nodejs.org/).
+
 ## Getting Started
 
-To get started with using this proxy service you will need two things:
+To get started with using this proxy service you will need three things:
 
-1. An Azure Web App Service - you will find the web.config file for the Windows stack in this repository
-2. An [App Configuration Service](https://learn.microsoft.com/en-us/azure/azure-app-configuration/howto-best-practices)
-3. An [Azure Application Insights Service](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net)
+1. An Azure Web App Service - you will find the web.config file for the Windows stack in this repository.
+2. An [App Configuration Service](https://learn.microsoft.com/en-us/azure/azure-app-configuration/howto-best-practices).
+3. An [Azure Application Insights Service](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net).
 
-The Web App Service is where you will host and deploy this proxy. You will also throw in some configuration in order to expose the mandatory node environment variables to the application.
+The Web App Service is where you will host and deploy this proxy. You will also need to configure it to expose the mandatory node environment variables to the application.
 <img width="1356" alt="image" src="https://user-images.githubusercontent.com/12514384/197591071-4eaa52e9-b723-45a1-bee0-c8c35becb60c.png">
-
 
 From the latter two you will use the **Application Insights Connection String** for initializing monitoring on your application and the **READ-ONLY** connection string from your App Configuration Service. Consult the image below:
 ![image](https://user-images.githubusercontent.com/12514384/197590675-793ab322-5236-4ac7-b63a-2b8601a3126f.png)
@@ -44,11 +50,12 @@ You can either deploy the contents of `/dist` folder in your own custom way, or 
 ## How to use
 
 After you deploy this service to a web application, you will have 3 endpoints exposed:
+
 - `/`
 - `/flush-cache`
 - `/health-check`
 
-The main endpoint supports passing a query parmeter with the value containing your comma separated feature flags. 
+The main endpoint supports passing a query parmeter with the value containing your comma separated feature flags.
 
 ```js
 /**
@@ -94,4 +101,3 @@ The health check endpoint allows you to integrate your service with various sani
 ## License
 
 [MIT](https://github.com/paulmorar/azure-app-configuration-proxy/blob/main/LICENSE.md)
-
