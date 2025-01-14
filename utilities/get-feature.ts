@@ -10,7 +10,7 @@ export const getFeature = async ({
   feature,
 }: GetFeatureParams): Promise<boolean> => {
   try {
-    const result = await client!.getConfigurationSetting(
+    const result = await client.getConfigurationSetting(
       {
         key: `.appconfig.featureflag/${feature}`,
       },
@@ -24,12 +24,8 @@ export const getFeature = async ({
       }
     );
 
-    if (result && typeof result === "object" && result.value) {
-      return JSON.parse(result.value).enabled;
-    }
-
-    return false;
-  } catch (error) {
+    return result?.value ? JSON.parse(result.value).enabled : false;
+  } catch {
     return false;
   }
 };
